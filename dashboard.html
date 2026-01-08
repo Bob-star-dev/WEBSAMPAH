@@ -15,53 +15,89 @@
                 <h1 class="header-title">Bak Sampah Pintar</h1>
                 <p class="header-subtitle">Sistem Pemilahan Sampah IoT</p>
             </div>
-            <div class="header-icon"><i class="fas fa-trash-alt"></i></div>
         </div>
     </header>
 
     <!-- Main Content -->
     <div class="container">
-        <!-- Welcome Section -->
-        <div class="card fade-in">
-            <div class="card-header">
-                <h2 class="card-title">Selamat Datang! <i class="fas fa-hand"></i></h2>
-                <div class="card-icon" id="currentTime">--:--</div>
+        <!-- Hero Section -->
+        <div class="hero-section fade-in">
+            <div class="hero-content">
+                <div class="hero-greeting">
+                    <h2 class="hero-title">Selamat Datang!</h2>
+                    <p class="hero-subtitle">Pantau penggunaan bak sampah pintar Anda secara real-time</p>
+                </div>
+                <div class="hero-time">
+                    <div class="time-display" id="currentTime">--:--</div>
+                    <div class="time-label">Waktu Saat Ini</div>
+                </div>
             </div>
-            <p style="color: var(--text-secondary); margin-top: var(--spacing-md);">
-                Pantau penggunaan bak sampah pintar Anda secara real-time
-            </p>
+            <div class="hero-decoration"></div>
+        </div>
+
+        <!-- Achievement Badge -->
+        <div class="achievement-card fade-in" id="achievementCard">
+            <div class="achievement-icon"><i class="fas fa-trophy"></i></div>
+            <div class="achievement-content">
+                <div class="achievement-title" id="achievementTitle">Pencapaian</div>
+                <div class="achievement-desc" id="achievementDesc">Tetap semangat untuk lingkungan lebih baik!</div>
+            </div>
         </div>
 
         <!-- Statistics Cards -->
         <div class="stats-grid">
             <!-- Organic Card -->
             <div class="stat-card organic fade-in">
-                <div class="stat-icon"><i class="fas fa-leaf"></i></div>
-                <div class="stat-label">
-                    <span>Sampah Organik</span>
+                <div class="stat-card-bg"></div>
+                <div class="stat-icon-wrapper">
+                    <div class="stat-icon"><i class="fas fa-leaf"></i></div>
                 </div>
-                <div class="stat-value" id="organicTotal">0</div>
-                <div class="stat-percentage" id="organicPercentage">0%</div>
+                <div class="stat-content">
+                    <div class="stat-label">
+                        <span>Sampah Organik</span>
+                    </div>
+                    <div class="stat-value" id="organicTotal">0</div>
+                    <div class="stat-percentage" id="organicPercentage">0%</div>
+                    <div class="stat-progress">
+                        <div class="progress-bar organic" id="organicProgress"></div>
+                    </div>
+                </div>
             </div>
 
             <!-- Non-Organic Card -->
             <div class="stat-card nonorganic fade-in">
-                <div class="stat-icon"><i class="fas fa-recycle"></i></div>
-                <div class="stat-label">
-                    <span>Sampah Non-Organik</span>
+                <div class="stat-card-bg"></div>
+                <div class="stat-icon-wrapper">
+                    <div class="stat-icon"><i class="fas fa-recycle"></i></div>
                 </div>
-                <div class="stat-value" id="nonOrganicTotal">0</div>
-                <div class="stat-percentage" id="nonOrganicPercentage">0%</div>
+                <div class="stat-content">
+                    <div class="stat-label">
+                        <span>Sampah Non-Organik</span>
+                    </div>
+                    <div class="stat-value" id="nonOrganicTotal">0</div>
+                    <div class="stat-percentage" id="nonOrganicPercentage">0%</div>
+                    <div class="stat-progress">
+                        <div class="progress-bar nonorganic" id="nonOrganicProgress"></div>
+                    </div>
+                </div>
             </div>
 
             <!-- Total Card -->
             <div class="stat-card total fade-in">
-                <div class="stat-icon"><i class="fas fa-chart-bar"></i></div>
-                <div class="stat-label">
-                    <span>Total Sampah</span>
+                <div class="stat-card-bg"></div>
+                <div class="stat-icon-wrapper">
+                    <div class="stat-icon"><i class="fas fa-chart-bar"></i></div>
                 </div>
-                <div class="stat-value" id="totalWaste">0</div>
-                <div class="stat-percentage" id="avgDaily">Rata-rata: 0/hari</div>
+                <div class="stat-content">
+                    <div class="stat-label">
+                        <span>Total Sampah</span>
+                    </div>
+                    <div class="stat-value" id="totalWaste">0</div>
+                    <div class="stat-percentage" id="avgDaily">Rata-rata: 0/hari</div>
+                    <div class="stat-trend">
+                        <i class="fas fa-arrow-trend-up"></i> <span>Meningkat</span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -90,22 +126,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Quick Actions -->
-        <div class="card fade-in">
-            <div class="card-header">
-                <h2 class="card-title">Aksi Cepat</h2>
-                <div class="card-icon"><i class="fas fa-bolt"></i></div>
-            </div>
-            <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
-                <button class="btn btn-primary" onclick="navigateTo('analitik.html')">
-                    <i class="fas fa-chart-bar"></i> Lihat Analitik Lengkap
-                </button>
-                <button class="btn btn-secondary" onclick="navigateTo('rekomendasi.html')">
-                    <i class="fas fa-lightbulb"></i> Lihat Rekomendasi AI
-                </button>
-            </div>
-        </div>
     </div>
 
     <!-- Bottom Navigation -->
@@ -128,6 +148,11 @@
         </a>
     </nav>
 
+    <!-- Floating Action Button -->
+    <div class="fab" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="data.js"></script>
@@ -149,6 +174,15 @@
             document.getElementById('organicPercentage').textContent = `${stats.organicPercentage}%`;
             document.getElementById('nonOrganicPercentage').textContent = `${stats.nonOrganicPercentage}%`;
             document.getElementById('avgDaily').textContent = `Rata-rata: ${stats.avgDaily}/hari`;
+            
+            // Update progress bars
+            setTimeout(() => {
+                document.getElementById('organicProgress').style.width = `${stats.organicPercentage}%`;
+                document.getElementById('nonOrganicProgress').style.width = `${stats.nonOrganicPercentage}%`;
+            }, 600);
+            
+            // Update achievement
+            updateAchievement(stats);
             
             // Display today's data
             const todayHTML = `
@@ -221,9 +255,69 @@
             }
         }
         
+        function updateAchievement(stats) {
+            const achievementCard = document.getElementById('achievementCard');
+            const achievementTitle = document.getElementById('achievementTitle');
+            const achievementDesc = document.getElementById('achievementDesc');
+            
+            let achievement = {
+                title: 'Pemula',
+                desc: 'Mulai perjalanan ramah lingkungan Anda!',
+                icon: 'fa-seedling'
+            };
+            
+            if (stats.total >= 1000) {
+                achievement = {
+                    title: 'Master Eco Warrior',
+                    desc: `Anda telah membantu lingkungan dengan ${stats.total} sampah!`,
+                    icon: 'fa-trophy'
+                };
+            } else if (stats.total >= 500) {
+                achievement = {
+                    title: 'Champion',
+                    desc: `Luar biasa! ${stats.total} sampah telah diklasifikasi!`,
+                    icon: 'fa-medal'
+                };
+            } else if (stats.total >= 200) {
+                achievement = {
+                    title: 'Eco Hero',
+                    desc: `Bagus! ${stats.total} sampah diklasifikasi dengan benar!`,
+                    icon: 'fa-star'
+                };
+            } else if (stats.total >= 50) {
+                achievement = {
+                    title: 'Eco Enthusiast',
+                    desc: `Teruskan! ${stats.total} sampah telah diklasifikasi!`,
+                    icon: 'fa-leaf'
+                };
+            }
+            
+            achievementTitle.textContent = achievement.title;
+            achievementDesc.textContent = achievement.desc;
+            achievementCard.querySelector('.achievement-icon i').className = `fas ${achievement.icon}`;
+        }
+        
+        // Show/hide FAB on scroll
+        function handleScroll() {
+            const fab = document.querySelector('.fab');
+            if (window.scrollY > 300) {
+                fab.classList.add('show');
+            } else {
+                fab.classList.remove('show');
+            }
+        }
+        
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
         // Load data on page load
         document.addEventListener('DOMContentLoaded', function() {
             loadDashboardData();
+            window.addEventListener('scroll', handleScroll);
         });
     </script>
 </body>

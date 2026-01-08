@@ -15,7 +15,6 @@
                 <h1 class="header-title">Analitik Data</h1>
                 <p class="header-subtitle">Analisis lengkap penggunaan bak sampah</p>
             </div>
-            <div class="header-icon"><i class="fas fa-chart-bar"></i></div>
         </div>
     </header>
 
@@ -97,6 +96,11 @@
             <div class="nav-label">Profil</div>
         </a>
     </nav>
+
+    <!-- Floating Action Button -->
+    <div class="fab" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </div>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -348,9 +352,27 @@
             document.getElementById('insights').innerHTML = insightsHTML || '<div class="empty-state"><div class="empty-text">Belum ada insight tersedia</div></div>';
         }
 
+        // Show/hide FAB on scroll
+        function handleScroll() {
+            const fab = document.querySelector('.fab');
+            if (window.scrollY > 300) {
+                fab.classList.add('show');
+            } else {
+                fab.classList.remove('show');
+            }
+        }
+        
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
         // Load analytics on page load
         document.addEventListener('DOMContentLoaded', function() {
             loadAnalytics();
+            window.addEventListener('scroll', handleScroll);
         });
     </script>
 </body>

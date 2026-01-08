@@ -15,7 +15,6 @@
                 <h1 class="header-title">Profil</h1>
                 <p class="header-subtitle">Pengaturan akun & informasi</p>
             </div>
-            <div class="header-icon"><i class="fas fa-user"></i></div>
         </div>
     </header>
 
@@ -163,6 +162,11 @@
         </a>
     </nav>
 
+    <!-- Floating Action Button -->
+    <div class="fab" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
     <!-- Scripts -->
     <script src="data.js"></script>
     <script src="app.js"></script>
@@ -257,9 +261,27 @@ Untuk bantuan lebih lanjut, hubungi support team.
             }
         }
         
+        // Show/hide FAB on scroll
+        function handleScroll() {
+            const fab = document.querySelector('.fab');
+            if (window.scrollY > 300) {
+                fab.classList.add('show');
+            } else {
+                fab.classList.remove('show');
+            }
+        }
+        
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
         // Load profile data on page load
         document.addEventListener('DOMContentLoaded', function() {
             loadProfileData();
+            window.addEventListener('scroll', handleScroll);
         });
     </script>
 </body>
