@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dashboard - Bak Sampah Pintar</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div>
+                <h1 class="header-title">Bak Sampah Pintar</h1>
+                <p class="header-subtitle">Sistem Pemilahan Sampah IoT</p>
+            </div>
+            <div class="header-icon"><i class="fas fa-trash-alt"></i></div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Welcome Section -->
+        <div class="card fade-in">
+            <div class="card-header">
+                <h2 class="card-title">Selamat Datang! <i class="fas fa-hand"></i></h2>
+                <div class="card-icon" id="currentTime">--:--</div>
+            </div>
+            <p style="color: var(--text-secondary); margin-top: var(--spacing-md);">
+                Pantau penggunaan bak sampah pintar Anda secara real-time
+            </p>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <!-- Organic Card -->
+            <div class="stat-card organic fade-in">
+                <div class="stat-icon"><i class="fas fa-leaf"></i></div>
+                <div class="stat-label">
+                    <span>Sampah Organik</span>
+                </div>
+                <div class="stat-value" id="organicTotal">0</div>
+                <div class="stat-percentage" id="organicPercentage">0%</div>
+            </div>
+
+            <!-- Non-Organic Card -->
+            <div class="stat-card nonorganic fade-in">
+                <div class="stat-icon"><i class="fas fa-recycle"></i></div>
+                <div class="stat-label">
+                    <span>Sampah Non-Organik</span>
+                </div>
+                <div class="stat-value" id="nonOrganicTotal">0</div>
+                <div class="stat-percentage" id="nonOrganicPercentage">0%</div>
+            </div>
+
+            <!-- Total Card -->
+            <div class="stat-card total fade-in">
+                <div class="stat-icon"><i class="fas fa-chart-bar"></i></div>
+                <div class="stat-label">
+                    <span>Total Sampah</span>
+                </div>
+                <div class="stat-value" id="totalWaste">0</div>
+                <div class="stat-percentage" id="avgDaily">Rata-rata: 0/hari</div>
+            </div>
+        </div>
+
+        <!-- Today's Data -->
+        <div class="card fade-in">
+            <div class="card-header">
+                <h2 class="card-title">Data Hari Ini</h2>
+                <div class="card-icon"><i class="fas fa-calendar-day"></i></div>
+            </div>
+            <div id="todayData">
+                <div class="loading">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Daily Stats -->
+        <div class="card fade-in">
+            <div class="card-header">
+                <h2 class="card-title">Riwayat 7 Hari Terakhir</h2>
+                <div class="card-icon"><i class="fas fa-chart-line"></i></div>
+            </div>
+            <div id="recentStats" class="daily-stats-list">
+                <div class="loading">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="card fade-in">
+            <div class="card-header">
+                <h2 class="card-title">Aksi Cepat</h2>
+                <div class="card-icon"><i class="fas fa-bolt"></i></div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">
+                <button class="btn btn-primary" onclick="navigateTo('analitik.html')">
+                    <i class="fas fa-chart-bar"></i> Lihat Analitik Lengkap
+                </button>
+                <button class="btn btn-secondary" onclick="navigateTo('rekomendasi.html')">
+                    <i class="fas fa-lightbulb"></i> Lihat Rekomendasi AI
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item active" data-page="dashboard">
+            <div class="nav-icon"><i class="fas fa-home"></i></div>
+            <div class="nav-label">Dashboard</div>
+        </a>
+        <a href="analitik.html" class="nav-item" data-page="analitik">
+            <div class="nav-icon"><i class="fas fa-chart-bar"></i></div>
+            <div class="nav-label">Analitik</div>
+        </a>
+        <a href="rekomendasi.html" class="nav-item" data-page="rekomendasi">
+            <div class="nav-icon"><i class="fas fa-lightbulb"></i></div>
+            <div class="nav-label">Rekomendasi</div>
+        </a>
+        <a href="profil.html" class="nav-item" data-page="profil">
+            <div class="nav-icon"><i class="fas fa-user"></i></div>
+            <div class="nav-label">Profil</div>
+        </a>
+    </nav>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Dashboard specific JavaScript
+        function loadDashboardData() {
+            // Get statistics
+            const stats = DataManager.getStats();
+            const todayData = DataManager.getTodayData();
+            
+            // Update stat cards with animation
+            setTimeout(() => {
+                AppJS.animateNumber(document.getElementById('organicTotal'), stats.totalOrganic);
+                AppJS.animateNumber(document.getElementById('nonOrganicTotal'), stats.totalNonOrganic);
+                AppJS.animateNumber(document.getElementById('totalWaste'), stats.total);
+            }, 300);
+            
+            document.getElementById('organicPercentage').textContent = `${stats.organicPercentage}%`;
+            document.getElementById('nonOrganicPercentage').textContent = `${stats.nonOrganicPercentage}%`;
+            document.getElementById('avgDaily').textContent = `Rata-rata: ${stats.avgDaily}/hari`;
+            
+            // Display today's data
+            const todayHTML = `
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md); margin-top: var(--spacing-md);">
+                    <div style="text-align: center; padding: var(--spacing-md); background: var(--bg-glass); border-radius: var(--radius-md); border-left: 3px solid var(--organic-color);">
+                        <div style="font-size: 0.875rem; color: var(--text-light); margin-bottom: var(--spacing-xs);">Organik</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--organic-color);">${todayData.organic}</div>
+                    </div>
+                    <div style="text-align: center; padding: var(--spacing-md); background: var(--bg-glass); border-radius: var(--radius-md); border-left: 3px solid var(--nonorganic-color);">
+                        <div style="font-size: 0.875rem; color: var(--text-light); margin-bottom: var(--spacing-xs);">Non-Organik</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--nonorganic-color);">${todayData.nonOrganic}</div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: var(--spacing-md); padding-top: var(--spacing-md); border-top: 1px solid #e5e7eb;">
+                    <div style="font-size: 0.875rem; color: var(--text-light);">Total Hari Ini</div>
+                    <div style="font-size: 1.5rem; font-weight: 700; margin-top: 4px;">${todayData.organic + todayData.nonOrganic} sampah</div>
+                </div>
+            `;
+            document.getElementById('todayData').innerHTML = todayHTML;
+            
+            // Display recent 7 days stats
+            const allData = DataManager.getAllData();
+            const sortedDates = Object.keys(allData).sort((a, b) => new Date(b) - new Date(a)).slice(0, 7);
+            const today = DataManager.getTodayDate();
+            
+            let recentHTML = '';
+            if (sortedDates.length === 0) {
+                recentHTML = '<div class="empty-state"><div class="empty-icon"><i class="fas fa-chart-bar"></i></div><div class="empty-text">Belum ada data</div></div>';
+            } else {
+                sortedDates.forEach(dateStr => {
+                    const data = allData[dateStr];
+                    const isToday = dateStr === today;
+                    recentHTML += `
+                        <div class="daily-stat-item ${isToday ? 'today' : ''}">
+                            <div class="daily-stat-date">
+                                <span>${DataManager.formatDateDisplay(dateStr)}</span>
+                                ${isToday ? '<span class="badge success">Hari Ini</span>' : ''}
+                            </div>
+                            <div class="daily-stat-numbers">
+                                <div class="daily-stat-number organic">
+                                    <div class="daily-stat-label">Organik</div>
+                                    <div class="daily-stat-value">${data.organic}</div>
+                                </div>
+                                <div class="daily-stat-number nonorganic">
+                                    <div class="daily-stat-label">Non-Organik</div>
+                                    <div class="daily-stat-value">${data.nonOrganic}</div>
+                                </div>
+                            </div>
+                            <div style="text-align: center; margin-top: var(--spacing-sm); padding-top: var(--spacing-sm); border-top: 1px solid #e5e7eb; color: var(--text-secondary); font-size: 0.875rem;">
+                                Total: ${data.organic + data.nonOrganic} sampah
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            document.getElementById('recentStats').innerHTML = recentHTML;
+            
+            // Update current time
+            updateCurrentTime();
+            setInterval(updateCurrentTime, 1000);
+        }
+        
+        function updateCurrentTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const timeElement = document.getElementById('currentTime');
+            if (timeElement) {
+                timeElement.textContent = `${hours}:${minutes}`;
+            }
+        }
+        
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDashboardData();
+        });
+    </script>
+</body>
+</html>
+

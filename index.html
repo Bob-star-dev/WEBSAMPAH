@@ -2,145 +2,22 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bak Sampah Otomatis - Klasifikasi Sampah Organik & Non-Organik</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Bak Sampah Pintar - Dashboard</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        // Redirect to dashboard
+        window.location.href = 'dashboard.html';
+    </script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Bak Sampah Otomatis</h1>
-            <p class="subtitle">Sistem Pemilahan Sampah Organik & Non-Organik</p>
-        </header>
-
-        <nav class="tabs">
-            <button class="tab-btn active" onclick="showTab('statistik')">Statistik</button>
-            <button class="tab-btn" onclick="showTab('grafik')">Grafik</button>
-            <button class="tab-btn" onclick="showTab('recommendation')">Rekomendasi</button>
-            <button class="tab-btn" onclick="showTab('info')">Tentang Sistem</button>
-        </nav>
-
-        <!-- Tab Statistik -->
-        <div id="info" class="tab-content">
-            <div class="info-section">
-                <h2>Tentang Sistem Bak Sampah Otomatis</h2>
-                <div class="info-grid">
-                    <div class="info-card">
-                        <div class="info-icon">⚙</div>
-                        <h3>Sistem Otomatis</h3>
-                        <p>Sistem menggunakan sensor dan teknologi untuk mengenali dan mengklasifikasikan jenis sampah secara otomatis.</p>
-                    </div>
-                    <div class="info-card">
-                        <div class="info-icon">🌿</div>
-                        <h3>Sampah Organik</h3>
-                        <p>Sampah yang dapat terurai secara alami seperti sisa makanan, sayuran, buah-buahan, dan bahan organik lainnya.</p>
-                    </div>
-                    <div class="info-card">
-                        <div class="info-icon">♻️</div>
-                        <h3>Sampah Non-Organik</h3>
-                        <p>Sampah yang tidak dapat terurai seperti plastik, kaca, logam, dan bahan sintetis lainnya yang dapat didaur ulang.</p>
-                    </div>
-                    <div class="info-card">
-                        <div class="info-icon">🌍</div>
-                        <h3>Manfaat Lingkungan</h3>
-                        <p>Membantu mengurangi polusi dan meningkatkan efisiensi proses daur ulang dengan pemilahan yang tepat.</p>
-                    </div>
-                </div>
-
-                <div class="how-it-works">
-                    <h2>Cara Kerja</h2>
-                    <ol>
-                        <li>Sampah diletakkan pada area sensor bak sampah</li>
-                        <li>Sistem akan menganalisis jenis sampah secara otomatis</li>
-                        <li>Klasifikasi: Organik atau Non-Organik</li>
-                        <li>Bak sampah akan membuka bagian yang sesuai</li>
-                        <li>Data tersimpan untuk statistik dan analisis</li>
-                    </ol>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab Statistik -->
-        <div id="statistik" class="tab-content active">
-            <div class="stats-section">
-                <h2>Statistik Penggunaan</h2>
-                <div class="stats-grid">
-                    <div class="stat-card organic">
-                        <h3>Organik</h3>
-                        <div class="stat-number" id="organicCount">0</div>
-                        <div class="stat-percentage" id="organicPercentage">0%</div>
-                    </div>
-                    <div class="stat-card non-organic">
-                        <h3>Non-Organik</h3>
-                        <div class="stat-number" id="nonOrganicCount">0</div>
-                        <div class="stat-percentage" id="nonOrganicPercentage">0%</div>
-                    </div>
-                    <div class="stat-card total">
-                        <h3>Total Sampah</h3>
-                        <div class="stat-number" id="totalCount">0</div>
-                    </div>
-                </div>
-                
-                <!-- Daily Statistics -->
-                <div class="daily-stats">
-                    <h3>Statistik Harian</h3>
-                    <div class="daily-history" id="dailyHistory">
-                        <!-- Daily history items will be inserted here -->
-                    </div>
-                </div>
-                
-                <button class="btn btn-secondary" onclick="resetStats()">Reset Statistik</button>
-            </div>
-        </div>
-
-        <!-- Tab Grafik -->
-        <div id="grafik" class="tab-content">
-            <div class="chart-section">
-                <h2>Grafik Statistik Sampah</h2>
-                <div class="chart-controls">
-                    <button class="chart-btn active" onclick="showChart('harian')" data-period="harian">Harian</button>
-                    <button class="chart-btn" onclick="showChart('mingguan')" data-period="mingguan">Mingguan</button>
-                    <button class="chart-btn" onclick="showChart('bulanan')" data-period="bulanan">Bulanan</button>
-                </div>
-                
-                <div class="chart-container">
-                    <div class="chart-title" id="chartTitle">Grafik Harian</div>
-                    <div class="chart-wrapper">
-                        <canvas id="wasteChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab Recommendation -->
-        <div id="recommendation" class="tab-content">
-            <div class="recommendation-section">
-                <h2>Rekomendasi</h2>
-                
-                <div class="recommendation-card">
-                    <h3>Rekomendasi Utama</h3>
-                    <div id="mainRecommendations"></div>
-                </div>
-
-                <div class="insight-card">
-                    <h4>Insight & Analisis</h4>
-                    <ul class="insight-list" id="insightsList"></ul>
-                </div>
-
-                <div class="insight-card">
-                    <h4>Tren Penggunaan</h4>
-                    <ul class="insight-list" id="trendsList"></ul>
-                </div>
-            </div>
+    <div style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background: var(--bg-primary); color: var(--text-primary);">
+        <div style="text-align: center;">
+            <div style="font-size: 3rem; margin-bottom: var(--spacing-md); color: var(--primary-color);"><i class="fas fa-trash-alt"></i></div>
+            <h1 style="margin-bottom: var(--spacing-sm);">Bak Sampah Pintar</h1>
+            <p style="color: var(--text-secondary);">Memuat aplikasi...</p>
         </div>
     </div>
-
-    <footer>
-        <p>&copy; 2024 Bak Sampah Otomatis - Sistem Pemilahan Sampah</p>
-    </footer>
-
-    <script src="script.js"></script>
 </body>
 </html>
-

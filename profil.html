@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Profil - Bak Sampah Pintar</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div>
+                <h1 class="header-title">Profil</h1>
+                <p class="header-subtitle">Pengaturan akun & informasi</p>
+            </div>
+            <div class="header-icon"><i class="fas fa-user"></i></div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Profile Header -->
+        <div class="profile-header fade-in">
+            <div class="profile-avatar" id="userAvatar"><i class="fas fa-user"></i></div>
+            <h2 class="profile-name" id="userName">Pengguna</h2>
+            <p class="profile-email" id="userEmail">user@example.com</p>
+        </div>
+
+        <!-- Statistics Summary -->
+        <div class="card fade-in">
+            <div class="card-header">
+                <h2 class="card-title">Ringkasan Aktivitas</h2>
+                <div class="card-icon"><i class="fas fa-chart-bar"></i></div>
+            </div>
+            <div id="activitySummary">
+                <div class="loading">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Items -->
+        <div class="card fade-in">
+            <ul class="profile-menu">
+                <li class="profile-menu-item" onclick="showAbout()">
+                    <div class="profile-menu-item-content">
+                        <div class="profile-menu-icon"><i class="fas fa-info-circle"></i></div>
+                        <div class="profile-menu-text">
+                            <div class="profile-menu-label">Tentang Aplikasi</div>
+                            <div class="profile-menu-desc">Info tentang Bak Sampah Pintar</div>
+                        </div>
+                    </div>
+                    <div>›</div>
+                </li>
+                <li class="profile-menu-item" onclick="showSettings()">
+                    <div class="profile-menu-item-content">
+                        <div class="profile-menu-icon"><i class="fas fa-cog"></i></div>
+                        <div class="profile-menu-text">
+                            <div class="profile-menu-label">Pengaturan</div>
+                            <div class="profile-menu-desc">Konfigurasi aplikasi</div>
+                        </div>
+                    </div>
+                    <div>›</div>
+                </li>
+                <li class="profile-menu-item" onclick="showHelp()">
+                    <div class="profile-menu-item-content">
+                        <div class="profile-menu-icon"><i class="fas fa-question-circle"></i></div>
+                        <div class="profile-menu-text">
+                            <div class="profile-menu-label">Bantuan</div>
+                            <div class="profile-menu-desc">FAQ & panduan penggunaan</div>
+                        </div>
+                    </div>
+                    <div>›</div>
+                </li>
+                <li class="profile-menu-item" onclick="resetData()">
+                    <div class="profile-menu-item-content">
+                        <div class="profile-menu-icon"><i class="fas fa-redo"></i></div>
+                        <div class="profile-menu-text">
+                            <div class="profile-menu-label">Reset Data</div>
+                            <div class="profile-menu-desc">Hapus semua data lokal</div>
+                        </div>
+                    </div>
+                    <div>›</div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- System Info -->
+        <div class="card fade-in">
+            <div class="card-header">
+                <h2 class="card-title">Informasi Sistem</h2>
+                <div class="card-icon"><i class="fas fa-tools"></i></div>
+            </div>
+            <div style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.8;">
+                <div style="display: flex; justify-content: space-between; padding: var(--spacing-sm) 0; border-bottom: 1px solid #e5e7eb;">
+                    <span>Versi Aplikasi</span>
+                    <span style="color: var(--text-primary); font-weight: 600;">1.0.0</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: var(--spacing-sm) 0; border-bottom: 1px solid #e5e7eb;">
+                    <span>Status IoT</span>
+                    <span class="badge" style="background: rgba(57, 239, 125, 0.2); color: var(--organic-color);">Terhubung</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: var(--spacing-sm) 0; border-bottom: 1px solid #e5e7eb;">
+                    <span>Status Firebase</span>
+                    <span class="badge" style="background: rgba(102, 126, 234, 0.2); color: var(--primary-color);">Dummy Data</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding: var(--spacing-sm) 0;">
+                    <span>Perangkat</span>
+                    <span style="color: var(--text-primary); font-weight: 600;">ESP32Cam + Servo</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Card -->
+        <div class="card fade-in">
+            <div class="card-header">
+                <h2 class="card-title">Tentang Sistem</h2>
+                <div class="card-icon"><i class="fas fa-trash-alt"></i></div>
+            </div>
+            <div style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.8;">
+                <p style="margin-bottom: var(--spacing-md);">
+                    <strong style="color: var(--text-primary);">Bak Sampah Pintar</strong> adalah sistem IoT yang menggunakan ESP32Cam untuk mendeteksi dan mengklasifikasikan sampah secara otomatis menjadi organik dan non-organik.
+                </p>
+                <p style="margin-bottom: var(--spacing-md);">
+                    Sistem ini bekerja dengan menangkap gambar sampah menggunakan kamera, memprosesnya dengan AI, kemudian menggerakkan servo untuk mengarahkan sampah ke bak yang tepat.
+                </p>
+                <div style="padding: var(--spacing-md); background: var(--bg-glass); border-radius: var(--radius-md); margin-top: var(--spacing-md);">
+                    <div style="font-weight: 600; color: var(--text-primary); margin-bottom: var(--spacing-sm);">
+                        Cara Kerja:
+                    </div>
+                    <ol style="margin-left: var(--spacing-md); line-height: 2;">
+                        <li>Sampah diletakkan di area sensor</li>
+                        <li>ESP32Cam menangkap gambar</li>
+                        <li>AI memproses dan mengklasifikasikan</li>
+                        <li>Servo menggerakkan papan ke kiri/kanan</li>
+                        <li>Data dikirim ke Firebase</li>
+                        <li>Web app menampilkan analisis</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item" data-page="dashboard">
+            <div class="nav-icon"><i class="fas fa-home"></i></div>
+            <div class="nav-label">Dashboard</div>
+        </a>
+        <a href="analitik.html" class="nav-item" data-page="analitik">
+            <div class="nav-icon"><i class="fas fa-chart-bar"></i></div>
+            <div class="nav-label">Analitik</div>
+        </a>
+        <a href="rekomendasi.html" class="nav-item" data-page="rekomendasi">
+            <div class="nav-icon"><i class="fas fa-lightbulb"></i></div>
+            <div class="nav-label">Rekomendasi</div>
+        </a>
+        <a href="profil.html" class="nav-item active" data-page="profil">
+            <div class="nav-icon"><i class="fas fa-user"></i></div>
+            <div class="nav-label">Profil</div>
+        </a>
+    </nav>
+
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Profile specific JavaScript
+        function loadProfileData() {
+            // Get user data from localStorage (or use default)
+            const userName = localStorage.getItem('userName') || 'Pengguna';
+            const userEmail = localStorage.getItem('userEmail') || 'user@example.com';
+            const userAvatar = localStorage.getItem('userAvatar') || '<i class="fas fa-user"></i>';
+            
+            document.getElementById('userName').textContent = userName;
+            document.getElementById('userEmail').textContent = userEmail;
+            document.getElementById('userAvatar').innerHTML = userAvatar;
+            
+            // Load activity summary
+            const stats = DataManager.getStats();
+            const todayData = DataManager.getTodayData();
+            
+            const summaryHTML = `
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-md);">
+                    <div style="text-align: center; padding: var(--spacing-md); background: var(--bg-glass); border-radius: var(--radius-md);">
+                        <div style="font-size: 0.875rem; color: var(--text-light); margin-bottom: var(--spacing-xs);">Total Sampah</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--text-primary);">${stats.total}</div>
+                    </div>
+                    <div style="text-align: center; padding: var(--spacing-md); background: var(--bg-glass); border-radius: var(--radius-md);">
+                        <div style="font-size: 0.875rem; color: var(--text-light); margin-bottom: var(--spacing-xs);">Hari Aktif</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--text-primary);">${stats.dayCount}</div>
+                    </div>
+                    <div style="text-align: center; padding: var(--spacing-md); background: var(--bg-glass); border-radius: var(--radius-md);">
+                        <div style="font-size: 0.875rem; color: var(--text-light); margin-bottom: var(--spacing-xs);">Rata-rata/hari</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--success-color);">${stats.avgDaily}</div>
+                    </div>
+                    <div style="text-align: center; padding: var(--spacing-md); background: var(--bg-glass); border-radius: var(--radius-md);">
+                        <div style="font-size: 0.875rem; color: var(--text-light); margin-bottom: var(--spacing-xs);">Hari Ini</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--text-primary);">${todayData.organic + todayData.nonOrganic}</div>
+                    </div>
+                </div>
+                <div style="margin-top: var(--spacing-md); padding: var(--spacing-md); background: var(--bg-glass); border-radius: var(--radius-md); text-align: center;">
+                    <div style="font-size: 0.875rem; color: var(--text-light); margin-bottom: var(--spacing-xs);">Rasio Organik</div>
+                    <div style="font-size: 1.5rem; font-weight: 700; color: var(--organic-color);">${stats.organicPercentage}%</div>
+                    <div style="margin-top: var(--spacing-sm); height: 8px; background: var(--bg-secondary); border-radius: var(--radius-full); overflow: hidden;">
+                        <div style="height: 100%; width: ${stats.organicPercentage}%; background: var(--organic-gradient); border-radius: var(--radius-full);"></div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('activitySummary').innerHTML = summaryHTML;
+        }
+        
+        function showAbout() {
+            alert('Bak Sampah Pintar v1.0.0\n\nSistem IoT untuk pemilahan sampah otomatis menggunakan ESP32Cam dan AI.\n\nDikembangkan untuk lingkungan yang lebih baik! 🌱');
+        }
+        
+        function showSettings() {
+            alert('Pengaturan akan tersedia dalam update selanjutnya.\n\nFitur yang akan datang:\n- Notifikasi\n- Tema\n- Bahasa\n- Sinkronisasi dengan Firebase');
+        }
+        
+        function showHelp() {
+            const helpText = `
+FAQ - Bak Sampah Pintar
+
+Q: Bagaimana cara menggunakan aplikasi?
+A: Aplikasi akan otomatis menampilkan data dari bak sampah pintar Anda melalui Firebase.
+
+Q: Bagaimana cara reset data?
+A: Klik menu "Reset Data" dan konfirmasi untuk menghapus semua data lokal.
+
+Q: Kapan data akan tersinkronisasi?
+A: Data akan tersinkronisasi secara real-time ketika terhubung dengan Firebase.
+
+Q: Bagaimana cara menghubungkan dengan IoT?
+A: Pastikan ESP32 terhubung ke WiFi dan Firebase. Status koneksi dapat dilihat di bagian Informasi Sistem.
+
+Untuk bantuan lebih lanjut, hubungi support team.
+            `;
+            alert(helpText);
+        }
+        
+        function resetData() {
+            if (confirm('Apakah Anda yakin ingin menghapus semua data?\n\nIni akan menghapus:\n- Semua statistik\n- Riwayat harian\n- Data analitik\n\nTindakan ini tidak dapat dibatalkan.')) {
+                localStorage.removeItem('trashData');
+                localStorage.removeItem('userName');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('userAvatar');
+                
+                // Regenerate dummy data
+                DataManager.init();
+                
+                alert('Data berhasil direset! Halaman akan dimuat ulang.');
+                window.location.reload();
+            }
+        }
+        
+        // Load profile data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProfileData();
+        });
+    </script>
+</body>
+</html>
+

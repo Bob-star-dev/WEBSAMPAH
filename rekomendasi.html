@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rekomendasi AI - Bak Sampah Pintar</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div>
+                <h1 class="header-title">Rekomendasi AI</h1>
+                <p class="header-subtitle">Analisis pintar untuk lingkungan lebih baik</p>
+            </div>
+            <div class="header-icon"><i class="fas fa-robot"></i></div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- AI Header -->
+        <div class="card fade-in" style="background: var(--primary-gradient); color: var(--text-primary);">
+            <div style="text-align: center;">
+                <div style="font-size: 3rem; margin-bottom: var(--spacing-md); color: white;"><i class="fas fa-robot"></i></div>
+                <h2 style="font-size: 1.5rem; margin-bottom: var(--spacing-sm);">AI Assistant</h2>
+                <p style="opacity: 0.9; font-size: 0.9375rem;">
+                    Menganalisis pola penggunaan sampah Anda untuk memberikan rekomendasi yang tepat
+                </p>
+            </div>
+        </div>
+
+        <!-- Main Recommendations -->
+        <div class="card fade-in">
+            <div class="card-header">
+                <h2 class="card-title">Rekomendasi Utama</h2>
+                <div class="card-icon"><i class="fas fa-star"></i></div>
+            </div>
+            <div id="mainRecommendations">
+                <div class="loading">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Analysis -->
+        <div class="card fade-in">
+            <div class="card-header">
+                <h2 class="card-title">Analisis Detail</h2>
+                <div class="card-icon"><i class="fas fa-search"></i></div>
+            </div>
+            <div id="detailedAnalysis">
+                <div class="loading">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips & Tricks -->
+        <div class="card fade-in">
+            <div class="card-header">
+                <h2 class="card-title">Tips & Trik</h2>
+                <div class="card-icon"><i class="fas fa-lightbulb"></i></div>
+            </div>
+            <div id="tipsSection">
+                <div class="loading">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <a href="dashboard.html" class="nav-item" data-page="dashboard">
+            <div class="nav-icon"><i class="fas fa-home"></i></div>
+            <div class="nav-label">Dashboard</div>
+        </a>
+        <a href="analitik.html" class="nav-item" data-page="analitik">
+            <div class="nav-icon"><i class="fas fa-chart-bar"></i></div>
+            <div class="nav-label">Analitik</div>
+        </a>
+        <a href="rekomendasi.html" class="nav-item active" data-page="rekomendasi">
+            <div class="nav-icon"><i class="fas fa-lightbulb"></i></div>
+            <div class="nav-label">Rekomendasi</div>
+        </a>
+        <a href="profil.html" class="nav-item" data-page="profil">
+            <div class="nav-icon"><i class="fas fa-user"></i></div>
+            <div class="nav-label">Profil</div>
+        </a>
+    </nav>
+
+    <!-- Scripts -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // AI Recommendations JavaScript
+        function generateAIRecommendations() {
+            const stats = DataManager.getStats();
+            const todayData = DataManager.getTodayData();
+            const allData = DataManager.getAllData();
+            const sortedDates = Object.keys(allData).sort((a, b) => new Date(a) - new Date(b));
+            const last7Days = sortedDates.slice(-7);
+            
+            // Calculate averages and trends
+            let totalLast7 = { organic: 0, nonOrganic: 0 };
+            last7Days.forEach(dateStr => {
+                const data = allData[dateStr];
+                totalLast7.organic += data.organic || 0;
+                totalLast7.nonOrganic += data.nonOrganic || 0;
+            });
+            
+            const avgLast7 = {
+                organic: totalLast7.organic / 7,
+                nonOrganic: totalLast7.nonOrganic / 7,
+                total: (totalLast7.organic + totalLast7.nonOrganic) / 7
+            };
+            
+            const todayTotal = todayData.organic + todayData.nonOrganic;
+            const organicRatio = stats.totalOrganic / stats.total * 100;
+            
+            const recommendations = [];
+            
+            // Recommendation 1: Based on today's inorganic usage
+            if (todayData.nonOrganic > 4) {
+                recommendations.push({
+                    icon: '♻️',
+                    title: 'Kurangi Penggunaan Bahan Anorganik',
+                    description: `Hari ini Anda sudah membuang ${todayData.nonOrganic} sampah anorganik. Coba gunakan lebih banyak produk yang dapat digunakan ulang atau produk organik untuk mengurangi limbah plastik.`,
+                    priority: 'high',
+                    type: 'nonorganic'
+                });
+            }
+            
+            // Recommendation 2: High organic ratio (good)
+            if (organicRatio > 70 && stats.total > 50) {
+                recommendations.push({
+                    icon: '<i class="fas fa-check-circle"></i>',
+                    title: 'Konsumsi Organik Anda Sangat Baik!',
+                    description: `${organicRatio.toFixed(1)}% sampah Anda adalah organik. Teruskan kebiasaan baik ini! Pertimbangkan membuat kompos dari sampah organik untuk manfaat lebih.`,
+                    priority: 'low',
+                    type: 'positive'
+                });
+            }
+            
+            // Recommendation 3: Low organic ratio
+            if (organicRatio < 40) {
+                recommendations.push({
+                    icon: '<i class="fas fa-leaf"></i>',
+                    title: 'Tingkatkan Konsumsi Produk Organik',
+                    description: `Hanya ${organicRatio.toFixed(1)}% sampah Anda yang organik. Coba beralih ke produk organik, gunakan kantong belanja reusable, dan kurangi penggunaan plastik sekali pakai.`,
+                    priority: 'high',
+                    type: 'organic'
+                });
+            }
+            
+            // Recommendation 4: High daily usage
+            if (todayTotal > avgLast7.total * 1.5) {
+                recommendations.push({
+                    icon: '<i class="fas fa-exclamation-triangle"></i>',
+                    title: 'Penggunaan Sampah Hari Ini Tinggi',
+                    description: `Anda telah membuang ${todayTotal} sampah hari ini, ${((todayTotal / avgLast7.total - 1) * 100).toFixed(0)}% lebih tinggi dari rata-rata. Pertimbangkan untuk mengurangi konsumsi atau menggunakan produk dengan kemasan minimal.`,
+                    priority: 'medium',
+                    type: 'usage'
+                });
+            }
+            
+            // Recommendation 5: Trend analysis
+            if (last7Days.length >= 4) {
+                const firstHalf = last7Days.slice(0, Math.floor(last7Days.length / 2));
+                const secondHalf = last7Days.slice(Math.floor(last7Days.length / 2));
+                
+                let firstHalfTotal = 0;
+                let secondHalfTotal = 0;
+                
+                firstHalf.forEach(dateStr => {
+                    const data = allData[dateStr];
+                    firstHalfTotal += (data.organic || 0) + (data.nonOrganic || 0);
+                });
+                
+                secondHalf.forEach(dateStr => {
+                    const data = allData[dateStr];
+                    secondHalfTotal += (data.organic || 0) + (data.nonOrganic || 0);
+                });
+                
+                if (secondHalfTotal > firstHalfTotal * 1.3) {
+                    recommendations.push({
+                        icon: '<i class="fas fa-arrow-up"></i>',
+                        title: 'Tren Penggunaan Meningkat',
+                        description: 'Penggunaan sampah Anda meningkat dalam beberapa hari terakhir. Evaluasi pola konsumsi dan pertimbangkan untuk mengurangi pembelian produk dengan kemasan berlebih.',
+                        priority: 'medium',
+                        type: 'trend'
+                    });
+                }
+            }
+            
+            // Recommendation 6: Balanced recommendation
+            if (recommendations.length === 0 || (organicRatio >= 40 && organicRatio <= 70 && todayTotal <= avgLast7.total * 1.2)) {
+                recommendations.push({
+                    icon: '<i class="fas fa-check"></i>',
+                    title: 'Pola Konsumsi Anda Seimbang',
+                    description: `Pola penggunaan sampah Anda sudah baik dengan rasio organik ${organicRatio.toFixed(1)}%. Tetap konsisten dalam pemilahan sampah dan pertimbangkan untuk mengompos sampah organik.`,
+                    priority: 'low',
+                    type: 'balanced'
+                });
+            }
+            
+            // Sort by priority
+            const priorityOrder = { 'high': 3, 'medium': 2, 'low': 1 };
+            recommendations.sort((a, b) => priorityOrder[b.priority] - priorityOrder[a.priority]);
+            
+            return recommendations;
+        }
+        
+        function displayMainRecommendations() {
+            const recommendations = generateAIRecommendations();
+            
+            let html = '<div style="display: flex; flex-direction: column; gap: var(--spacing-md);">';
+            
+            // Show top 3 recommendations
+            const topRecommendations = recommendations.slice(0, 3);
+            
+            topRecommendations.forEach((rec, index) => {
+                const priorityColors = {
+                    'high': 'var(--nonorganic-gradient)',
+                    'medium': 'var(--warning-color)',
+                    'low': 'var(--organic-gradient)'
+                };
+                
+                html += `
+                    <div class="recommendation-card" style="border-left: 4px solid; border-image: ${priorityColors[rec.priority]} 1;">
+                        <div class="recommendation-header">
+                            <div class="recommendation-icon">${rec.icon}</div>
+                            <div class="recommendation-title">${rec.title}</div>
+                        </div>
+                        <div class="recommendation-text">${rec.description}</div>
+                        ${index === 0 ? '<div style="margin-top: var(--spacing-sm);"><span class="badge" style="background: rgba(102, 126, 234, 0.2); color: var(--primary-color);">Rekomendasi Teratas</span></div>' : ''}
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            
+            document.getElementById('mainRecommendations').innerHTML = html;
+        }
+        
+        function displayDetailedAnalysis() {
+            const stats = DataManager.getStats();
+            const todayData = DataManager.getTodayData();
+            const allData = DataManager.getAllData();
+            const sortedDates = Object.keys(allData).sort((a, b) => new Date(a) - new Date(b));
+            const last7Days = sortedDates.slice(-7);
+            
+            let totalLast7 = { organic: 0, nonOrganic: 0 };
+            last7Days.forEach(dateStr => {
+                const data = allData[dateStr];
+                totalLast7.organic += data.organic || 0;
+                totalLast7.nonOrganic += data.nonOrganic || 0;
+            });
+            
+            const organicRatio = stats.totalOrganic / stats.total * 100;
+            const todayTotal = todayData.organic + todayData.nonOrganic;
+            
+            const analysisHTML = `
+                <div style="display: flex; flex-direction: column; gap: var(--spacing-md);">
+                    <div style="padding: var(--spacing-md); background: var(--bg-glass); border-radius: var(--radius-md); border-left: 3px solid var(--organic-color);">
+                        <div style="font-weight: 600; margin-bottom: var(--spacing-xs); color: var(--text-primary);">
+                            <i class="fas fa-chart-bar"></i> Analisis Hari Ini
+                        </div>
+                        <div style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.6;">
+                            Hari ini: <strong>${todayTotal} sampah</strong> (${todayData.organic} organik, ${todayData.nonOrganic} anorganik).
+                            ${todayData.nonOrganic > 4 ? `Karena sudah ${todayData.nonOrganic} anorganik hari ini, AI merekomendasikan untuk mengurangi penggunaan plastik.` : 'Penggunaan sampah hari ini masih dalam batas wajar.'}
+                        </div>
+                    </div>
+                    
+                    <div style="padding: var(--spacing-md); background: var(--bg-glass); border-radius: var(--radius-md); border-left: 3px solid var(--success-color);">
+                        <div style="font-weight: 600; margin-bottom: var(--spacing-xs); color: var(--text-primary);">
+                            📈 Analisis 7 Hari Terakhir
+                        </div>
+                        <div style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.6;">
+                            Rata-rata harian: <strong>${((totalLast7.organic + totalLast7.nonOrganic) / 7).toFixed(1)} sampah</strong>.
+                            Total: ${totalLast7.organic + totalLast7.nonOrganic} sampah (${totalLast7.organic} organik, ${totalLast7.nonOrganic} anorganik).
+                        </div>
+                    </div>
+                    
+                    <div style="padding: var(--spacing-md); background: var(--bg-glass); border-radius: var(--radius-md); border-left: 3px solid var(--primary-color);">
+                        <div style="font-weight: 600; margin-bottom: var(--spacing-xs); color: var(--text-primary);">
+                            🎯 Rasio Organik vs Anorganik
+                        </div>
+                        <div style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.6;">
+                            Rasio organik Anda: <strong>${organicRatio.toFixed(1)}%</strong>.
+                            ${organicRatio < 40 ? 'AI merekomendasikan untuk meningkatkan konsumsi produk organik dan mengurangi plastik sekali pakai.' : organicRatio > 70 ? 'Sangat bagus! Pola konsumsi organik Anda sangat baik.' : 'Rasio Anda seimbang, pertahankan konsistensi.'}
+                        </div>
+                    </div>
+                    
+                    <div style="padding: var(--spacing-md); background: var(--bg-glass); border-radius: var(--radius-md); border-left: 3px solid var(--warning-color);">
+                        <div style="font-weight: 600; margin-bottom: var(--spacing-xs); color: var(--text-primary);">
+                            💚 Dampak Lingkungan
+                        </div>
+                        <div style="color: var(--text-secondary); font-size: 0.9375rem; line-height: 1.6;">
+                            Dengan rasio organik ${organicRatio.toFixed(1)}%, Anda telah membantu mengurangi ${Math.round(stats.totalNonOrganic * 0.5)}kg emisi karbon potensial melalui pemilahan yang benar. Teruskan kebiasaan baik ini!
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('detailedAnalysis').innerHTML = analysisHTML;
+        }
+        
+        function displayTips() {
+            const stats = DataManager.getStats();
+            const organicRatio = stats.totalOrganic / stats.total * 100;
+            
+            let tipsHTML = '<div style="display: flex; flex-direction: column; gap: var(--spacing-sm);">';
+            
+            const allTips = [
+                {
+                    icon: '<i class="fas fa-shopping-cart"></i>',
+                    title: 'Bawa Tas Belanja Sendiri',
+                    desc: 'Gunakan tas belanja reusable untuk mengurangi penggunaan kantong plastik sekali pakai.'
+                },
+                {
+                    icon: '<i class="fas fa-leaf"></i>',
+                    title: 'Pilih Produk Organik',
+                    desc: 'Pilih produk dengan kemasan minimal atau kemasan biodegradable.'
+                },
+                {
+                    icon: '♻️',
+                    title: 'Daur Ulang Kreatif',
+                    desc: 'Gunakan kembali botol, kaleng, dan kemasan lainnya untuk keperluan kreatif sebelum dibuang.'
+                },
+                {
+                    icon: '<i class="fas fa-seedling"></i>',
+                    title: 'Kompos Sampah Organik',
+                    desc: 'Buat kompos dari sampah organik untuk menghasilkan pupuk alami untuk tanaman.'
+                },
+                {
+                    icon: '<i class="fas fa-box"></i>',
+                    title: 'Minimalisir Kemasan',
+                    desc: 'Pilih produk dengan kemasan minimal dan hindari produk dengan over-packaging.'
+                }
+            ];
+            
+            // Prioritize tips based on user's ratio
+            if (organicRatio < 40) {
+                // Show tips about reducing non-organic first
+                tipsHTML += `
+                    <div class="recommendation-card" style="border-left: 4px solid var(--nonorganic-color);">
+                        <div class="recommendation-header">
+                            <div class="recommendation-icon">${allTips[0].icon}</div>
+                            <div class="recommendation-title">${allTips[0].title}</div>
+                        </div>
+                        <div class="recommendation-text">${allTips[0].desc}</div>
+                    </div>
+                    <div class="recommendation-card" style="border-left: 4px solid var(--organic-color);">
+                        <div class="recommendation-header">
+                            <div class="recommendation-icon">${allTips[1].icon}</div>
+                            <div class="recommendation-title">${allTips[1].title}</div>
+                        </div>
+                        <div class="recommendation-text">${allTips[1].desc}</div>
+                    </div>
+                `;
+            }
+            
+            allTips.forEach(tip => {
+                tipsHTML += `
+                    <div class="recommendation-card" style="border-left: 4px solid var(--primary-color);">
+                        <div class="recommendation-header">
+                            <div class="recommendation-icon">${tip.icon}</div>
+                            <div class="recommendation-title">${tip.title}</div>
+                        </div>
+                        <div class="recommendation-text">${tip.desc}</div>
+                    </div>
+                `;
+            });
+            
+            tipsHTML += '</div>';
+            
+            document.getElementById('tipsSection').innerHTML = tipsHTML;
+        }
+        
+        // Load recommendations on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            displayMainRecommendations();
+            displayDetailedAnalysis();
+            displayTips();
+        });
+    </script>
+</body>
+</html>
+
